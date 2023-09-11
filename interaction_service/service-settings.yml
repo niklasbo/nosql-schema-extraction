@@ -1,0 +1,8 @@
+---
+meta-model-url: http://localhost:8084
+
+# add your connections string prefixes and the corresponding service urls
+extraction-services:
+  mongodb: http://localhost:7000
+  neo4j: http://localhost:8000
+# don´t worry you can also override the service url in each extraction request

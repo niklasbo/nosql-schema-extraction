@@ -1,0 +1,564 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "HTTP Interaction Service for Schema Extraction of multiple NoSQL Databases",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/status": {
+            "get": {
+                "summary": "returns the service status",
+                "operationId": "read_status_status_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/settings": {
+            "get": {
+                "summary": "returns the default settings",
+                "operationId": "read_settings_settings_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SettingsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/extract": {
+            "post": {
+                "summary": "selects the matching service and sends the schema extraction request",
+                "description": "selects the matching extraction service, sends the request to it and returns the job id",
+                "operationId": "start_schema_extraction_extract_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExtractionUserRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtractionUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "501": {
+                        "description": "Not Implemented",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "599": {
+                        "description": "Additional Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs": {
+            "get": {
+                "summary": "get all job ids",
+                "operationId": "read_all_jobs_jobs_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtractionJobsResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs/{job_id}": {
+            "get": {
+                "summary": "read job status from schema extraction service",
+                "operationId": "read_job_status_jobs__job_id__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Job Id",
+                            "type": "string"
+                        },
+                        "name": "job_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtractionStatusUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtractionStatusUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "599": {
+                        "description": "Additional Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs/{job_id}/results": {
+            "get": {
+                "summary": "read job results from schema extraction service",
+                "operationId": "read_job_results_jobs__job_id__results_get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Job Id",
+                            "type": "string"
+                        },
+                        "name": "job_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtractionResultUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtractionStatusUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtractionStatusUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "599": {
+                        "description": "Additional Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs/{job_id}/forward": {
+            "post": {
+                "summary": "read job results and forward to meta model service",
+                "description": "basically like read_job_results but with forwarding to the MetaModel service",
+                "operationId": "forward_job_results_jobs__job_id__forward_post",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Job Id",
+                            "type": "string"
+                        },
+                        "name": "job_id",
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ForwardingUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ForwardingUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtractionStatusUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ExtractionStatusUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "599": {
+                        "description": "Additional Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StatusResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ExtractionJobsResponse": {
+                "title": "ExtractionJobsResponse",
+                "required": [
+                    "jobs"
+                ],
+                "type": "object",
+                "properties": {
+                    "jobs": {
+                        "title": "Jobs",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "ExtractionResultUserResponse": {
+                "title": "ExtractionResultUserResponse",
+                "required": [
+                    "job_id",
+                    "extraction_service",
+                    "json_schema"
+                ],
+                "type": "object",
+                "properties": {
+                    "job_id": {
+                        "title": "Job Id",
+                        "type": "string"
+                    },
+                    "extraction_service": {
+                        "title": "Extraction Service",
+                        "type": "string"
+                    },
+                    "json_schema": {
+                        "title": "Json Schema",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "description": "DTO "
+            },
+            "ExtractionStatusUserResponse": {
+                "title": "ExtractionStatusUserResponse",
+                "required": [
+                    "job_id",
+                    "extraction_service",
+                    "status"
+                ],
+                "type": "object",
+                "properties": {
+                    "job_id": {
+                        "title": "Job Id",
+                        "type": "string"
+                    },
+                    "extraction_service": {
+                        "title": "Extraction Service",
+                        "type": "string"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "type": "string"
+                    }
+                },
+                "description": "DTO "
+            },
+            "ExtractionUserRequest": {
+                "title": "ExtractionUserRequest",
+                "required": [
+                    "uri",
+                    "user",
+                    "password"
+                ],
+                "type": "object",
+                "properties": {
+                    "uri": {
+                        "title": "Uri",
+                        "type": "string"
+                    },
+                    "user": {
+                        "title": "User",
+                        "type": "string"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "type": "string"
+                    },
+                    "extraction_service": {
+                        "title": "Extraction Service",
+                        "type": "string"
+                    }
+                },
+                "description": "DTO "
+            },
+            "ExtractionUserResponse": {
+                "title": "ExtractionUserResponse",
+                "required": [
+                    "job_id",
+                    "extraction_service"
+                ],
+                "type": "object",
+                "properties": {
+                    "job_id": {
+                        "title": "Job Id",
+                        "type": "string"
+                    },
+                    "extraction_service": {
+                        "title": "Extraction Service",
+                        "type": "string"
+                    }
+                },
+                "description": "DTO "
+            },
+            "ForwardingUserRequest": {
+                "title": "ForwardingUserRequest",
+                "type": "object",
+                "properties": {
+                    "meta_model_service": {
+                        "title": "Meta Model Service",
+                        "type": "string"
+                    }
+                },
+                "description": "DTO "
+            },
+            "ForwardingUserResponse": {
+                "title": "ForwardingUserResponse",
+                "required": [
+                    "forwarded_file"
+                ],
+                "type": "object",
+                "properties": {
+                    "forwarded_file": {
+                        "title": "Forwarded File",
+                        "type": "string"
+                    }
+                },
+                "description": "DTO "
+            },
+            "HTTPValidationError": {
+                "title": "HTTPValidationError",
+                "type": "object",
+                "properties": {
+                    "detail": {
+                        "title": "Detail",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        }
+                    }
+                }
+            },
+            "SettingsResponse": {
+                "title": "SettingsResponse",
+                "required": [
+                    "meta_model_service",
+                    "extraction_services"
+                ],
+                "type": "object",
+                "properties": {
+                    "meta_model_service": {
+                        "title": "Meta Model Service",
+                        "type": "string"
+                    },
+                    "extraction_services": {
+                        "title": "Extraction Services",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "description": "DTO "
+            },
+            "StatusResponse": {
+                "title": "StatusResponse",
+                "required": [
+                    "status"
+                ],
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "type": "string"
+                    }
+                },
+                "description": "DTO "
+            },
+            "ValidationError": {
+                "title": "ValidationError",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "title": "Location",
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        }
+                    },
+                    "msg": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Error Type",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

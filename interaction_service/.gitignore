@@ -1,0 +1,9 @@
+venv/*
+
+.vscode/*
+
+__pycache__/*
+
+results/*
+# add one example result in git
+# !results/job_1677410299*

@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  graph_db_extractor:
+    build: 
+      context: ./graph_db_extractor/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./results:/code/results
+
+  aggregate_db_extractor:
+    build: 
+      context: ./aggregate_db_extractor/
+      dockerfile: Dockerfile
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./results:/code/results
+
+  interaction_service:
+    build: 
+      context: ./interaction_service/
+      dockerfile: Dockerfile
+    ports:
+      - "80:9000"
+
+volumes:
+  schema-results-data:
+    driver: local
